@@ -11,5 +11,5 @@
  - pay-center-design 设计文档素材
 ## 设计
 ### 类图
-![class](https://github.com/qyuhy/PayCenter/tree/master/pay-center-design/images/class_structure.png)
+![image](https://github.com/qyuhy/PayCenter/blob/master/pay-center-design/images/class_structure.png)
 
