@@ -10,5 +10,5 @@ import open.pay.center.core.pay.response.PayCoreQueryResponse;
  * Email: qyuhy@qq.com
  */
 public interface PayQuery {
-    PayCoreQueryResponse query(PayCoreQueryRequest request);
+    PayCoreQueryResponse payQuery(PayCoreQueryRequest request);
 }

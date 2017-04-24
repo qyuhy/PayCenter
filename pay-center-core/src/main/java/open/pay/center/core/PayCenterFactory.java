@@ -1,5 +1,6 @@
 package open.pay.center.core;
 
+import open.pay.center.core.daifu.DaifuWayFactory;
 import open.pay.center.core.pay.PayWayFactory;
 import open.pay.center.core.pay.query.PayQuery;
 
@@ -12,4 +13,5 @@ import open.pay.center.core.pay.query.PayQuery;
 public interface PayCenterFactory {
     PayWayFactory createPayWayFactory();
     PayQuery createPayQuery();
+    DaifuWayFactory createDaifuWayFactory();
 }

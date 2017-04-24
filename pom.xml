@@ -9,12 +9,15 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>pay-core</module>
         <module>pay-center-core</module>
-        <module>open.pay.center.union</module>
         <module>pay-center-union</module>
         <module>pay-center-api</module>
+        <module>pay-center-test</module>
+        <module>pay-center-baofu</module>
+        <module>pay-center-design</module>
     </modules>
 
+    <dependencyManagement>
 
+    </dependencyManagement>
 </project>

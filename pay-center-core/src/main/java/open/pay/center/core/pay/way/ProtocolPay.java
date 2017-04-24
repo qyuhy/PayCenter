@@ -11,5 +11,5 @@ import open.pay.center.core.pay.response.PayCoreResponse;
  * 协议支付接口
  */
 public interface ProtocolPay {
-    PayCoreResponse protocolPay(PayCoreRequest request);
+    <T extends PayCoreResponse> T protocolPay(PayCoreRequest request);
 }

@@ -1,4 +1,4 @@
-package open.pay.center.union;
+package open.pay.center.baofu;
 
 import open.pay.center.core.AbstractPayCenterFactory;
 import open.pay.center.core.daifu.way.TwoStepDaifu;
@@ -9,23 +9,16 @@ import open.pay.center.core.pay.way.ScanPay;
 
 /**
  * User: hyman
- * Date: 2017/4/20 0020
- * Time: 14:53
+ * Date: 2017/4/24 0024
+ * Time: 14:18
  * Email: qyuhy@qq.com
- * 抽象银联基类
- * 可以在此类中添加银联公用的签名类
  */
-public class AbstractUnionPayCenter extends AbstractPayCenterFactory{
+public class AbstractBaoFuPayCenter extends AbstractPayCenterFactory {
 
     protected TwoStepDaifu injectTwoStepDaifu() {
         return null;
     }
 
-    /**
-     * 子类覆盖此方法
-     * @param request
-     * @return
-     */
     protected PayCoreQueryResponse doPayQuery(PayCoreQueryRequest request) {
         return null;
     }

@@ -8,5 +8,5 @@ import open.pay.center.core.request.CoreRequest;
  * Time: 17:10
  * Email: qyuhy@qq.com
  */
-public class PayCoreRequest extends CoreRequest{
+public abstract class PayCoreRequest extends CoreRequest{
 }

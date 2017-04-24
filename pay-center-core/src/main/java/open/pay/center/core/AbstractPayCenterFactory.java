@@ -1,5 +1,7 @@
 package open.pay.center.core;
 
+import open.pay.center.core.daifu.DaifuWayFactory;
+import open.pay.center.core.daifu.way.TwoStepDaifu;
 import open.pay.center.core.pay.PayWayFactory;
 import open.pay.center.core.pay.query.PayQuery;
 import open.pay.center.core.pay.request.PayCoreQueryRequest;
@@ -13,7 +15,7 @@ import open.pay.center.core.pay.way.ScanPay;
  * Time: 14:45
  * Email: qyuhy@qq.com
  */
-public abstract class AbstractPayCenterFactory implements PayWayFactory, PayQuery {
+public abstract class AbstractPayCenterFactory implements PayWayFactory, PayQuery ,DaifuWayFactory{
 
     public ProtocolPay createProtocolPay() {
         return injectProtocolPay();
@@ -24,9 +26,20 @@ public abstract class AbstractPayCenterFactory implements PayWayFactory, PayQuer
     }
 
 
-    public PayCoreQueryResponse query(PayCoreQueryRequest request) {
+    public PayCoreQueryResponse payQuery(PayCoreQueryRequest request) {
         return doPayQuery(request);
     }
+
+
+    public TwoStepDaifu createTwoStepDaifu(){
+        return injectTwoStepDaifu();
+    }
+
+    /**
+     * 两阶段代付
+     * @return
+     */
+    protected abstract TwoStepDaifu injectTwoStepDaifu();
 
     /**
      * 子类实现具体的支付查询结果

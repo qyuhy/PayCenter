@@ -6,6 +6,6 @@ package open.pay.center.core.request;
  * Time: 17:09
  * Email: qyuhy@qq.com
  */
-public class CoreRequest {
+public abstract class CoreRequest{
 
 }
