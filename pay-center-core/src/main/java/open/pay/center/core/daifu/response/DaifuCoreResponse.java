@@ -10,4 +10,12 @@ import open.pay.center.core.response.CoreResponse;
  */
 public class DaifuCoreResponse extends CoreResponse{
 
+    protected DaifuCoreResponse(String plainResponse) {
+        super(plainResponse);
+    }
+
+    @Override
+    protected void parsePlainResponse() {
+
+    }
 }

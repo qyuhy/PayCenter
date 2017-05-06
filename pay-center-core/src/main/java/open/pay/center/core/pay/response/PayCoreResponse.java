@@ -9,4 +9,13 @@ import open.pay.center.core.response.CoreResponse;
  * Email: qyuhy@qq.com
  */
 public class PayCoreResponse extends CoreResponse{
+
+    protected PayCoreResponse(String plainResponse) {
+        super(plainResponse);
+    }
+
+    @Override
+    protected void parsePlainResponse() {
+
+    }
 }

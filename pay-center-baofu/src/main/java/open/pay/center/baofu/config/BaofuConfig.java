@@ -9,5 +9,5 @@ import open.pay.center.core.config.Config;
  * Email: qyuhy@qq.com
  */
 public class BaofuConfig extends Config{
-
+    public final String ENCODED = "UTF-8";
 }

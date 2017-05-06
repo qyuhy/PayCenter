@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Time: 17:09
  * Email: qyuhy@qq.com
  */
-public class CoreResponse extends HashMap implements Serializable{
+public abstract class CoreResponse extends HashMap implements Serializable{
     /**
      *  返回值状态
      */
@@ -24,7 +24,21 @@ public class CoreResponse extends HashMap implements Serializable{
      * 消息提示信息
      */
     protected String tip;
+    /**
+     * 消息原始文本信息，需要解析原始文本消息到特定的字段
+     */
+    protected String plainResponse;
 
+    protected CoreResponse(String plainResponse){
+        this.plainResponse = plainResponse;
+        this.parsePlainResponse();
+    }
+
+    protected abstract void parsePlainResponse();
+
+    public String getPlainResponse() {
+        return plainResponse;
+    }
 
     public ResponseStatus getStatus() {
         return status;

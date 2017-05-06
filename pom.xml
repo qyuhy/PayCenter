@@ -16,8 +16,50 @@
         <module>pay-center-baofu</module>
         <module>pay-center-design</module>
     </modules>
+    <properties>
+        <fastjson.version>1.2.31</fastjson.version>
+        <sl4j.version>1.7.21</sl4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <bouncycastle.verion>1.56</bouncycastle.verion>
+        <commons.lang.version>2.6</commons.lang.version>
+    </properties>
 
     <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
 
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bouncycastle.verion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons.lang.version}</version>
+            </dependency>
+
+            <!--log-->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${sl4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${sl4j.version}</version>
+            </dependency>
+        </dependencies>
     </dependencyManagement>
 </project>

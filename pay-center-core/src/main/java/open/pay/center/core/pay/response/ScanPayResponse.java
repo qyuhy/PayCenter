@@ -7,4 +7,7 @@ package open.pay.center.core.pay.response;
  * Email: qyuhy@qq.com
  */
 public class ScanPayResponse extends PayCoreResponse{
+    protected ScanPayResponse(String plainResponse) {
+        super(plainResponse);
+    }
 }

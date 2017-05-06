@@ -8,4 +8,7 @@ package open.pay.center.core.pay.response;
  */
 public class PrepareScanPayResponse extends PayCoreQueryResponse{
 
+    protected PrepareScanPayResponse(String plainResponse) {
+        super(plainResponse);
+    }
 }

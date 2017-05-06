@@ -1,7 +1,9 @@
 package open.pay.center.core.daifu.way;
 
-import open.pay.center.core.daifu.request.DaifuCoreRequest;
-import open.pay.center.core.daifu.response.DaifuCoreResponse;
+import open.pay.center.core.daifu.request.QueryTwoStepDaifuRequest;
+import open.pay.center.core.daifu.request.SubmitTwoStepDaifuRequest;
+import open.pay.center.core.daifu.response.QueryTwoStepDaifuResponse;
+import open.pay.center.core.daifu.response.SubmitTwoStepDaifuResponse;
 
 /**
  * User: hyman
@@ -17,7 +19,7 @@ public interface TwoStepDaifu {
      * @param <T>
      * @return
      */
-    <T extends DaifuCoreResponse> T submitTwoStepDaifu(DaifuCoreRequest request);
+    <T extends SubmitTwoStepDaifuResponse> T submitTwoStepDaifu(SubmitTwoStepDaifuRequest request);
 
     /**
      * 查询代付请求结果
@@ -25,5 +27,5 @@ public interface TwoStepDaifu {
      * @param <T>
      * @return
      */
-    <T extends DaifuCoreResponse> T queryTwoStepDaifu(DaifuCoreRequest request);
+    <T extends QueryTwoStepDaifuResponse> T queryTwoStepDaifu(QueryTwoStepDaifuRequest request);
 }

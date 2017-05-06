@@ -10,4 +10,7 @@ import open.pay.center.core.pay.response.PayCoreResponse;
  */
 public class UnionProtocolPayResponse extends PayCoreResponse {
 
+    public UnionProtocolPayResponse(String plainResponse) {
+        super(plainResponse);
+    }
 }

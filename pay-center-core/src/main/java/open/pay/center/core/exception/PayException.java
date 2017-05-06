@@ -11,6 +11,12 @@ public class PayException extends RuntimeException{
     public static final PayException UN_IMPL_METHOD = new PayException(
       200001,"未实现的方法"
     );
+    public static final PayException PRI_FILE_NOT_EXSITS = new PayException(
+            205001,"私钥文件不存在"
+    );
+    public static final PayException PUB_FILE_NOT_EXSITS = new PayException(
+            205002,"公钥文件不存在"
+    );
 
 
     /**

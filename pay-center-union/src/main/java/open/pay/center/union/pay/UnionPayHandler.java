@@ -15,7 +15,7 @@ import open.pay.center.union.pay.response.UnionProtocolPayResponse;
 public class UnionPayHandler extends AbstractUnionPayCenter implements ProtocolPay{
 
     public <T extends PayCoreResponse> T protocolPay(PayCoreRequest request) {
-        UnionProtocolPayResponse response = new UnionProtocolPayResponse();
+        UnionProtocolPayResponse response = new UnionProtocolPayResponse(null);
         System.out.println("底层执行了........");
         return cast(response);
     }
