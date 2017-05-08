@@ -106,4 +106,8 @@ public class BaofuQueryTwoStepDaifuResponse extends QueryTwoStepDaifuResponse {
                 ",plainResponse=" + plainResponse +
                 "}";
     }
+
+    public Map<String, TwoStepDaifuItemVo> getItems() {
+        return items;
+    }
 }

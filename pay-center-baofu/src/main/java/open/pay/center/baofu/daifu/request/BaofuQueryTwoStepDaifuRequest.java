@@ -36,6 +36,8 @@ public class BaofuQueryTwoStepDaifuRequest extends QueryTwoStepDaifuRequest{
      */
     private String version = VERSION;
 
+    public BaofuQueryTwoStepDaifuRequest(){};
+
     public BaofuQueryTwoStepDaifuRequest(String url, MerInfo merInfo,List<TwoStepDaifuItemVo> params) {
         this.params = params;
         this.url = url;
