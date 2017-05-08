@@ -13,7 +13,17 @@ import java.util.Map;
 public class ApiConfig {
     public static final int CONNECTON_TIME_OUT = 60000;
     public static final int READ_TIME_OUT = 120000;
+    public static final String ENV_TEST = "TEST";
 
+    /**
+     * 环境信息：测试环境信息会打印原文信息
+     * 正式环境：打印加密信息；
+     */
+    private String env = ENV_TEST;
+    /**
+     * 日志加密密码
+     */
+    private String logEncryptPassword;
     /**
      * ============================================
      * ==========宝付代付交易配置信息开始==========
@@ -81,7 +91,6 @@ public class ApiConfig {
      * 宝付商户号列表
      */
     private Map<String,MerInfo> baofuMerInoList;
-
 
     public Map<String, MerInfo> getBaofuMerInoList() {
         return baofuMerInoList;
@@ -185,5 +194,20 @@ public class ApiConfig {
 
     public void setBfDaifuQueryHttpReadTimeout(int bfDaifuQueryHttpReadTimeout) {
         this.bfDaifuQueryHttpReadTimeout = bfDaifuQueryHttpReadTimeout;
+    }
+    public String getEnv() {
+        return env;
+    }
+
+    public String getLogEncryptPassword() {
+        return logEncryptPassword;
+    }
+
+    public void setLogEncryptPassword(String logEncryptPassword) {
+        this.logEncryptPassword = logEncryptPassword;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
     }
 }

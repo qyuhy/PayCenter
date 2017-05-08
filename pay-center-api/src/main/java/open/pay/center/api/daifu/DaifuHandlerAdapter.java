@@ -14,6 +14,7 @@ import open.pay.center.baofu.daifu.response.BaofuSubmitTwoStepDaifuResponse;
 import open.pay.center.baofu.daifu.vo.TwoStepDaifuItemVo;
 import open.pay.center.core.daifu.way.TwoStepDaifu;
 import open.pay.center.core.model.Money;
+import open.pay.center.core.model.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,8 @@ public class DaifuHandlerAdapter{
         submitTwoStepDaifuRequest.setConnectionTimeout(config.getBfDaifuSubmitHttpConnectionTimeOut());//创建链接超时时间
         submitTwoStepDaifuRequest.setReadTimeout(config.getBfDaifuSubmitHttpReadTimeout());//读取数据超时时间
         submitTwoStepDaifuRequest.setMerInfo(config.getBaofuMerInoList().get(config.getBfDaifuSubmitMerId() + config.getBfDaifuSubmitTerminal()));//商户信息
+        submitTwoStepDaifuRequest.setEncrpyt(ApiConfig.ENV_TEST.equals(config.getEnv()) ? false : true);
+        submitTwoStepDaifuRequest.setEncryptPassword(config.getLogEncryptPassword());
         List<TwoStepDaifuItemVo> items = new ArrayList<TwoStepDaifuItemVo>();//提交内容
         Money amount = Money.newByFen(request.getAmount());//分转换为元
         TwoStepDaifuItemVo item = new TwoStepDaifuItemVo(request.getOrderNo(),amount.getYuan()+"",request.getUserName(),request.getCardNo(),request.getBankName());
@@ -175,6 +178,8 @@ public class DaifuHandlerAdapter{
         queryTwoStepDaifuRequest.setConnectionTimeout(config.getBfDaifuQueryHttpConnectionTimeOut());//创建链接超时时间
         queryTwoStepDaifuRequest.setReadTimeout(config.getBfDaifuQueryHttpReadTimeout());//读取数据超时时间
         queryTwoStepDaifuRequest.setMerInfo(config.getBaofuMerInoList().get(config.getBfDaifuQueryMerId() + config.getBfDaifuQueryTerminal()));//商户信息
+        queryTwoStepDaifuRequest.setEncrpyt(ApiConfig.ENV_TEST.equals(config.getEnv()) ? false : true);
+        queryTwoStepDaifuRequest.setEncryptPassword(config.getLogEncryptPassword());
         List<TwoStepDaifuItemVo> items = new ArrayList<TwoStepDaifuItemVo>();//提交内容
         TwoStepDaifuItemVo item = new TwoStepDaifuItemVo(daifuQueryRequest.getOrderNo(),daifuQueryRequest.getBatchId());
         items.add(item);
@@ -225,10 +230,12 @@ public class DaifuHandlerAdapter{
         String amount = null;
         String channelOrderNo = null;
         String cardNo = null;
+        ResponseStatus transStatus = null;
         if(item != null){
             amount = Money.newByYuan(item.getTransMoney()).getFen() + "";
             channelOrderNo = item.getTransOrderid();
             cardNo = item.getToAccNo();
+            transStatus = item.getTransState();
         }
         DaifuQueryResponse daifuQueryResponse = new DaifuQueryResponse(
                 queryTwoStepDaifuResponse.getTipStatus(),
@@ -239,6 +246,7 @@ public class DaifuHandlerAdapter{
         daifuQueryResponse.setChannelOrderNo(channelOrderNo);
         daifuQueryResponse.setCardNo(cardNo);
         daifuQueryResponse.setEntry(item);
+        daifuQueryResponse.setTransStatus(transStatus);
         return daifuQueryResponse;
     }
 

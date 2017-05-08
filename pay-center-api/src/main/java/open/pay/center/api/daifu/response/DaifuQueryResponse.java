@@ -22,6 +22,10 @@ public class DaifuQueryResponse extends ResponseBaseVo {
      * 收款银行账号
      */
     private String cardNo;
+    /**
+     * 交易状态
+     */
+    private ResponseStatus transStatus;
 
     public DaifuQueryResponse(String returnCode, String returnMessage, String returnText, ResponseStatus status, String amount) {
         this.returnCode = returnCode;
@@ -29,6 +33,14 @@ public class DaifuQueryResponse extends ResponseBaseVo {
         this.returnText = returnText;
         this.status = status;
         this.amount = amount;
+    }
+
+    public ResponseStatus getTransStatus() {
+        return transStatus;
+    }
+
+    public void setTransStatus(ResponseStatus transStatus) {
+        this.transStatus = transStatus;
     }
 
     public String getAmount() {
@@ -62,6 +74,7 @@ public class DaifuQueryResponse extends ResponseBaseVo {
                 ", returnMessage='" + returnMessage + '\'' +
                 ", returnText='" + returnText + '\'' +
                 ", status=" + status +
+                ", transStatus=" + transStatus +
                 ", channelOrderNo='" + channelOrderNo + '\'' +
                 ", amount='" + amount + '\'' +
                 ", cardNo='" + cardNo + '\'' +

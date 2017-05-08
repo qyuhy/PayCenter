@@ -8,14 +8,20 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>pay-center-baofu</artifactId>
+    <properties>
+        <final.name>pay-center-baofu</final.name>
+    </properties>
 
-    <artifactId>baofu</artifactId>
     <dependencies>
         <dependency>
             <groupId>open.pay.center</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>pay-center-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>${final.name}</finalName>
+    </build>
 
 </project>

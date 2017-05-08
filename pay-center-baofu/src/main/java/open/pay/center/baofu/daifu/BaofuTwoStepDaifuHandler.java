@@ -44,14 +44,13 @@ public class BaofuTwoStepDaifuHandler extends AbstractBaoFuPayCenter implements 
                 .of("data_type",req.getDataType())
                 .of("terminal_id",merInfo.getTerminalId())
                 .of("data_content",this.encodeBase64AndEncryptByPrivateKey(req.getDataContent(),privateKey));
-        logger.info("宝付代付请求加密信息为:["+req.getDataContent()+"]");
+        logger.info("baofu daifu submit request:宝付代付请求加密信息为:["+ (req.isEncrpyt() ? this.encryptLog(req.getDataContent(),req.getEncryptPassword()) : req.getDataContent())+"]");
         //发送Http请求
         String response = this.send(req.getUrl(), param,"UTF-8", req.getConnectionTimeout(), req.getReadTimeout());
         //解析数据
         String decodedText = this.decryptByPublicKeyAndDecodeBase64(response, publicKey);
-        logger.info("宝付代付响应原文为:[" + decodedText + "]");
+        logger.info("baofu daifu response:宝付代付响应原文为:[" + (req.isEncrpyt() ? this.encryptLog(decodedText,req.getEncryptPassword()) : decodedText) + "]");
         BaofuSubmitTwoStepDaifuResponse retValue = new BaofuSubmitTwoStepDaifuResponse(decodedText);
-        logger.info("宝付代付响应原文解析到对象为;["+retValue+"]");
         return (T)retValue;
     }
 
@@ -68,13 +67,12 @@ public class BaofuTwoStepDaifuHandler extends AbstractBaoFuPayCenter implements 
                 .of("terminal_id",merInfo.getTerminalId())
                 .of("data_content",this.encodeBase64AndEncryptByPrivateKey(req.getDataContent(),privateKey));
         //发送Http请求
-        logger.info("宝付代付查询请求加密信息为:["+req.getDataContent()+"]");
+        logger.info("baofu daifu query request:宝付代付查询请求加密信息为:["+(req.isEncrpyt() ? this.encryptLog(req.getDataContent(),req.getEncryptPassword()) : req.getDataContent())+"]");
         String response = this.send(req.getUrl(), param,"UTF-8", req.getConnectionTimeout(), req.getReadTimeout());
         //解析数据
         String decodedText = this.decryptByPublicKeyAndDecodeBase64(response, publicKey);
-        logger.info("宝付代付查询响应原文为:[" + decodedText + "]");
+        logger.info("baofu daifu query response:宝付代付查询响应原文为:[" + (req.isEncrpyt() ? this.encryptLog(decodedText,req.getEncryptPassword()) : decodedText) + "]");
         BaofuQueryTwoStepDaifuResponse retValue = new BaofuQueryTwoStepDaifuResponse(decodedText);
-        logger.info("宝付代查询付响应原文解析到对象为;["+retValue+"]");
         return (T)retValue;
     }
 }

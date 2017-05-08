@@ -92,6 +92,20 @@ public class BaofuQueryTwoStepDaifuResponse extends QueryTwoStepDaifuResponse {
             item.setState(state);
             item.setTransStarttime(trans_starttime);
             item.setTransEnndtime(trans_endtime);
+            //设置订单交易状态
+            /**
+             * 0：转账中；
+             1：转账成功；
+             -1：转账失败；
+             2：转账退款
+             */
+            ResponseStatus status = ResponseStatus.PENDING;
+            if("1".equals(state)){
+                status = ResponseStatus.SUCCESS;
+            }else if("-1".equals(state)){
+                status = ResponseStatus.ERROR;
+            }
+            item.setTransState(status);
             items.put(trans_no,item);
         }
     }

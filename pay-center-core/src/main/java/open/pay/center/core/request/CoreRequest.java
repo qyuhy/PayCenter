@@ -27,7 +27,30 @@ public class CoreRequest{
      * 读取数据超时时间
      */
     protected int readTimeout = Config.DEFAULT_READ_TIMEOUT;
+    /**
+     * 是否对关键日志进行加密
+     */
+    protected boolean encrpyt = false;
+    /**
+     * 加密字符串
+     */
+    protected String encryptPassword;
 
+    public boolean isEncrpyt() {
+        return encrpyt;
+    }
+
+    public void setEncrpyt(boolean encrpyt) {
+        this.encrpyt = encrpyt;
+    }
+
+    public String getEncryptPassword() {
+        return encryptPassword;
+    }
+
+    public void setEncryptPassword(String encryptPassword) {
+        this.encryptPassword = encryptPassword;
+    }
 
     public String getUrl() {
         return url;

@@ -1,5 +1,7 @@
 package open.pay.center.baofu.daifu.vo;
 
+import open.pay.center.core.model.ResponseStatus;
+
 /**
  * User: hyman
  * Date: 2017/5/4 0004
@@ -77,6 +79,10 @@ public class TwoStepDaifuItemVo {
      * 收款方宝付会员号
      */
     private String toMemberId;
+    /**
+     * 订单交易状态
+     */
+    private ResponseStatus transState;
 
     /**
      * 构造函数
@@ -107,6 +113,14 @@ public class TwoStepDaifuItemVo {
      */
     public static TwoStepDaifuItemVo newQueryParam(String transNo, String transBatchid){
         return new TwoStepDaifuItemVo(transNo,transBatchid);
+    }
+
+    public ResponseStatus getTransState() {
+        return transState;
+    }
+
+    public void setTransState(ResponseStatus transState) {
+        this.transState = transState;
     }
 
     public String getTransFee() {

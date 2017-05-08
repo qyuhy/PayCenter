@@ -11,5 +11,10 @@
 
     <artifactId>pay-center-design</artifactId>
 
-
+    <properties>
+        <final.name>pay-center-design</final.name>
+    </properties>
+    <build>
+        <finalName>pay-center-design</finalName>
+    </build>
 </project>

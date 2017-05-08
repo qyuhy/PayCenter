@@ -9,10 +9,9 @@ import open.pay.center.core.pay.request.PayCoreQueryRequest;
 import open.pay.center.core.pay.response.PayCoreQueryResponse;
 import open.pay.center.core.pay.way.ProtocolPay;
 import open.pay.center.core.pay.way.ScanPay;
+import open.pay.center.core.util.LogUtil;
 import open.pay.center.core.util.http.HttpClient;
 import open.pay.center.core.util.http.Param;
-
-import java.util.Map;
 
 /**
  * User: hyman
@@ -103,5 +102,15 @@ public abstract class AbstractPayCenterFactory implements PayWayFactory, PayQuer
             throw new PayException("发送GET请求异常!",e);
         }
         return httpClient.getResult();
+    }
+
+    /**
+     * 对关键的日志信息进行加密
+     * @param text
+     * @param password
+     * @return
+     */
+    protected String encryptLog(String text,String password){
+        return LogUtil.encryptLog(text,password);
     }
 }

@@ -109,4 +109,24 @@ public class LogUtil {
 			GATELOG.debug(cont);
 		}
 	}
+
+	/**
+	 * 加密日志信息
+	 * @param log
+	 * @param password
+     * @return
+     */
+	public static String encryptLog(String log,String password){
+		return BlowfishUtil.encrypt(log,password);
+	}
+
+	/**
+	 * 解密日志
+	 * @param log
+	 * @param password
+     * @return
+     */
+	public static String decryptLog(String log,String password){
+		return BlowfishUtil.decrypt(log,password);
+	}
 }
