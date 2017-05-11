@@ -97,4 +97,6 @@ public class DaifuSubmitResponse extends ResponseBaseVo{
                 ", entry=" + entry +
                 '}';
     }
+
+
 }

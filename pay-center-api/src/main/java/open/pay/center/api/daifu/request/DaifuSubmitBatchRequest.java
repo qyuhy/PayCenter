@@ -14,6 +14,10 @@ public class DaifuSubmitBatchRequest {
      */
     private List<DaifuSubmitRequest> itemList;
 
+    public DaifuSubmitBatchRequest(List<DaifuSubmitRequest> itemList) {
+        this.itemList = itemList;
+    }
+
     public List<DaifuSubmitRequest> getItemList() {
         return itemList;
     }
