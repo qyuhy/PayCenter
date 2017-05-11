@@ -4,6 +4,7 @@ import open.pay.center.api.PayChannelEnum;
 import open.pay.center.api.PayManager;
 import open.pay.center.api.config.ApiConfig;
 import open.pay.center.api.daifu.request.DaifuQueryRequest;
+import open.pay.center.api.daifu.request.DaifuSubmitBatchRequest;
 import open.pay.center.api.daifu.request.DaifuSubmitRequest;
 import open.pay.center.api.daifu.response.DaifuQueryResponse;
 import open.pay.center.api.daifu.response.DaifuSubmitResponse;
@@ -12,6 +13,7 @@ import open.pay.center.baofu.daifu.request.BaofuSubmitTwoStepDaifuRequest;
 import open.pay.center.baofu.daifu.response.BaofuQueryTwoStepDaifuResponse;
 import open.pay.center.baofu.daifu.response.BaofuSubmitTwoStepDaifuResponse;
 import open.pay.center.baofu.daifu.vo.TwoStepDaifuItemVo;
+import open.pay.center.baofu.exception.BaofuException;
 import open.pay.center.core.daifu.way.TwoStepDaifu;
 import open.pay.center.core.model.Money;
 import open.pay.center.core.model.ResponseStatus;
@@ -30,6 +32,8 @@ import java.util.Set;
 public class DaifuHandlerAdapter{
     private ApiConfig config;
 
+
+    public DaifuHandlerAdapter(){};
     public DaifuHandlerAdapter(ApiConfig config){
         this.config = config;
     }
@@ -49,6 +53,47 @@ public class DaifuHandlerAdapter{
         return response;
     }
 
+    public DaifuSubmitResponse submitBatch(PayChannelEnum payChannelEnum, DaifuSubmitBatchRequest request){
+        //根据渠道不同构建不同的参数信息
+        DaifuSubmitResponse response = null;
+        switch (payChannelEnum){
+            case BAOFU:
+                response = this.executeBaofuDaifuSubmitBatch(request);
+                break;
+            case UNION:
+                break;
+            default:
+        }
+        return response;
+    }
+
+
+    public int maxBatchSize(PayChannelEnum payChannelEnum){
+        int maxSize = 1;
+        switch (payChannelEnum){
+            case BAOFU:
+                maxSize = 5;
+                break;
+            case UNION:
+                maxSize = 1;
+                break;
+            default:
+        }
+        return maxSize;
+    }
+
+    private DaifuSubmitResponse executeBaofuDaifuSubmitBatch(DaifuSubmitBatchRequest request) {
+        TwoStepDaifu handler = PayManager.getInstance().getTwoStepDaifu(PayChannelEnum.BAOFU);
+        //1.构建请求参数
+        BaofuSubmitTwoStepDaifuRequest baofuSubmitTwoStepDaifuRequest = this.buildBaofuDaifuSubmitRequest(null,request);
+        //2.执行
+        BaofuSubmitTwoStepDaifuResponse submitTwoStepDaifuResponse = handler.submitTwoStepDaifu(baofuSubmitTwoStepDaifuRequest);
+
+
+        return null;
+    }
+
+
     /**
      * 把请求对象转换为字符串；
      * @param payChannelEnum
@@ -59,7 +104,7 @@ public class DaifuHandlerAdapter{
         String response = null;
         switch (payChannelEnum){
             case BAOFU:
-                BaofuSubmitTwoStepDaifuRequest submitBaofuRequest = this.buildBaofuDaifuSubmitRequest(request);
+                BaofuSubmitTwoStepDaifuRequest submitBaofuRequest = this.buildBaofuDaifuSubmitRequest(request,null);
                 response = submitBaofuRequest.formatJsonString();
                 break;
             case UNION:
@@ -74,7 +119,7 @@ public class DaifuHandlerAdapter{
      * @param request
      * @return
      */
-    private BaofuSubmitTwoStepDaifuRequest buildBaofuDaifuSubmitRequest(DaifuSubmitRequest request) {
+    private BaofuSubmitTwoStepDaifuRequest buildBaofuDaifuSubmitRequest(DaifuSubmitRequest request,DaifuSubmitBatchRequest batchRequest) {
         BaofuSubmitTwoStepDaifuRequest submitTwoStepDaifuRequest = new BaofuSubmitTwoStepDaifuRequest();
         submitTwoStepDaifuRequest.setUrl(config.getBfDaifuSubmitUrl());//请求URL
         submitTwoStepDaifuRequest.setConnectionTimeout(config.getBfDaifuSubmitHttpConnectionTimeOut());//创建链接超时时间
@@ -83,13 +128,29 @@ public class DaifuHandlerAdapter{
         submitTwoStepDaifuRequest.setEncrpyt(ApiConfig.ENV_TEST.equals(config.getEnv()) ? false : true);
         submitTwoStepDaifuRequest.setEncryptPassword(config.getLogEncryptPassword());
         List<TwoStepDaifuItemVo> items = new ArrayList<TwoStepDaifuItemVo>();//提交内容
-        Money amount = Money.newByFen(request.getAmount());//分转换为元
-        TwoStepDaifuItemVo item = new TwoStepDaifuItemVo(request.getOrderNo(),amount.getYuan()+"",request.getUserName(),request.getCardNo(),request.getBankName());
-        item.setToProName(request.getProvince()); //收款人开户行省名
-        item.setToCityName(request.getCity());//收款人开户行市名
-        item.setToAccDept(request.getSubBank());//收款人开户行机构名
-        item.setTransSummary(request.getRemark());//摘要
-        items.add(item);
+        //单笔提交
+        if(request == null && batchRequest != null){
+            batchRequest.getItemList().add(request);
+        }else{
+            batchRequest = new DaifuSubmitBatchRequest();
+            List<DaifuSubmitRequest> list = new ArrayList<DaifuSubmitRequest>();
+            if(request != null){
+                list.add(request);
+            }
+            batchRequest.setItemList(list);
+        }
+        if(batchRequest.getItemList().size() > this.maxBatchSize(PayChannelEnum.BAOFU)){
+            throw new BaofuException("超过最大提交参数"+this.maxBatchSize(PayChannelEnum.BAOFU));
+        }
+        for (DaifuSubmitRequest daifuSubmitRequest : batchRequest.getItemList()) {
+            Money amount = Money.newByFen(daifuSubmitRequest.getAmount());//分转换为元
+            TwoStepDaifuItemVo item = new TwoStepDaifuItemVo(daifuSubmitRequest.getOrderNo(),amount.getYuan()+"",daifuSubmitRequest.getUserName(),daifuSubmitRequest.getCardNo(),daifuSubmitRequest.getBankName());
+            item.setToProName(daifuSubmitRequest.getProvince()); //收款人开户行省名
+            item.setToCityName(daifuSubmitRequest.getCity());//收款人开户行市名
+            item.setToAccDept(daifuSubmitRequest.getSubBank());//收款人开户行机构名
+            item.setTransSummary(daifuSubmitRequest.getRemark());//摘要
+            items.add(item);
+        }
         submitTwoStepDaifuRequest.setItems(items);
         return submitTwoStepDaifuRequest;
     }
@@ -102,7 +163,7 @@ public class DaifuHandlerAdapter{
     private DaifuSubmitResponse executeBaofuDaifuSubmit(DaifuSubmitRequest request) {
         TwoStepDaifu handler = PayManager.getInstance().getTwoStepDaifu(PayChannelEnum.BAOFU);
         //1.构建请求参数
-        BaofuSubmitTwoStepDaifuRequest baofuSubmitTwoStepDaifuRequest = this.buildBaofuDaifuSubmitRequest(request);
+        BaofuSubmitTwoStepDaifuRequest baofuSubmitTwoStepDaifuRequest = this.buildBaofuDaifuSubmitRequest(request,null);
         //2.执行
         BaofuSubmitTwoStepDaifuResponse submitTwoStepDaifuResponse = handler.submitTwoStepDaifu(baofuSubmitTwoStepDaifuRequest);
         //3.转换请求为统一的参数;
@@ -250,4 +311,11 @@ public class DaifuHandlerAdapter{
         return daifuQueryResponse;
     }
 
+    public ApiConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(ApiConfig config) {
+        this.config = config;
+    }
 }
