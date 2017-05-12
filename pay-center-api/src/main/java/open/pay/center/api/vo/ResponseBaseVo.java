@@ -23,14 +23,38 @@ public class ResponseBaseVo {
      */
     protected String returnText;
     /**
-     * 状态
+     * 接口调用状态
      */
     protected ResponseStatus status;
     /**
      * 实体对象;
      */
     protected Object entry;
+    /**
+     * 接口是否支持同步返回状态
+     */
+    private boolean supportSynchronized;
+    /**
+     * 交易状态
+     */
+    private ResponseStatus transStatus;
 
+
+    public boolean isSupportSynchronized() {
+        return supportSynchronized;
+    }
+
+    public void setSupportSynchronized(boolean supportSynchronized) {
+        this.supportSynchronized = supportSynchronized;
+    }
+
+    public ResponseStatus getTransStatus() {
+        return transStatus;
+    }
+
+    public void setTransStatus(ResponseStatus transStatus) {
+        this.transStatus = transStatus;
+    }
 
     public String getReturnCode() {
         return returnCode;

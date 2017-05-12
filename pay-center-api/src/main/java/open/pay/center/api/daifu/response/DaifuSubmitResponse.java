@@ -94,6 +94,8 @@ public class DaifuSubmitResponse extends ResponseBaseVo{
                 ", amount='" + amount + '\'' +
                 ", cardNo='" + cardNo + '\'' +
                 ", channelBatchid='" + channelBatchid + '\'' +
+                ", supportSynchronized=" + this.isSupportSynchronized() +
+                ", transStatus=" + this.getTransStatus() +
                 ", entry=" + entry +
                 '}';
     }

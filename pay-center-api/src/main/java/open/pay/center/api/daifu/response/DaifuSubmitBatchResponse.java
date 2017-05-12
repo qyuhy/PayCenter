@@ -47,6 +47,8 @@ public class DaifuSubmitBatchResponse extends ResponseBaseVo{
                 ", returnMessage='" + returnMessage + '\'' +
                 ", returnText='" + returnText + '\'' +
                 ", status=" + status +
+                ", supportSynchronized=" + this.isSupportSynchronized() +
+                ", transStatus=" + this.getTransStatus() +
                 ", itemList=" + builder +
                 ", entry=" + entry +
                 '}';
