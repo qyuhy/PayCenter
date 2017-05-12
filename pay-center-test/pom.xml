@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pay-center-api</artifactId>
+    <artifactId>pay-center-test</artifactId>
     <properties>
-        <final.name>pay-center-api</final.name>
+        <final.name>pay-center-test</final.name>
     </properties>
 
     <dependencies>
