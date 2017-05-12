@@ -33,7 +33,7 @@ public class ResponseBaseVo {
     /**
      * 接口是否支持同步返回状态
      */
-    private boolean supportSynchronized;
+    private boolean supportSynchronized = false;
     /**
      * 交易状态
      */
