@@ -230,8 +230,8 @@ public class HttpClient {
 		httpURLConnection.setDoInput(true); // 可读
 		httpURLConnection.setDoOutput(true); // 可写
 		httpURLConnection.setUseCaches(false);// 取消缓存
-		httpURLConnection.setRequestProperty("Content-type",
-				"application/x-www-form-urlencoded;charset=" + encoding);
+		httpURLConnection.setRequestProperty("Content-type","application/x-www-form-urlencoded;charset=" + encoding);
+		httpURLConnection.setRequestProperty("http.protocol.content-charset", encoding);
 		httpURLConnection.setRequestMethod("POST");
 		if ("https".equalsIgnoreCase(url.getProtocol())) {
 			HttpsURLConnection husn = (HttpsURLConnection) httpURLConnection;
@@ -262,6 +262,7 @@ public class HttpClient {
 		httpURLConnection.setUseCaches(false);// 取消缓存
 		httpURLConnection.setRequestProperty("Content-type",
 				"application/x-www-form-urlencoded;charset=" + encoding);
+		httpURLConnection.setRequestProperty("http.protocol.content-charset", encoding);
 		httpURLConnection.setRequestMethod("GET");
 		if ("https".equalsIgnoreCase(url.getProtocol())) {
 			HttpsURLConnection husn = (HttpsURLConnection) httpURLConnection;

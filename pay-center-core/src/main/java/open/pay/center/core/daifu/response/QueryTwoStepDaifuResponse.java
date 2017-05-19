@@ -10,4 +10,5 @@ public class QueryTwoStepDaifuResponse extends DaifuCoreResponse{
     protected QueryTwoStepDaifuResponse(String plainResponse) {
         super(plainResponse);
     }
+
 }

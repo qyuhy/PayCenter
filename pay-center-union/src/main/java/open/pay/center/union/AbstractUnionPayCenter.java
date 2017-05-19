@@ -2,10 +2,12 @@ package open.pay.center.union;
 
 import open.pay.center.core.AbstractPayCenterFactory;
 import open.pay.center.core.daifu.way.TwoStepDaifu;
+import open.pay.center.core.model.MerInfo;
 import open.pay.center.core.pay.request.PayCoreQueryRequest;
 import open.pay.center.core.pay.response.PayCoreQueryResponse;
 import open.pay.center.core.pay.way.ProtocolPay;
 import open.pay.center.core.pay.way.ScanPay;
+import open.pay.center.union.service.UnionMerInfoStoreService;
 
 /**
  * User: hyman
@@ -36,5 +38,10 @@ public class AbstractUnionPayCenter extends AbstractPayCenterFactory{
 
     protected ScanPay injectScanPay() {
         return null;
+    }
+
+
+    public MerInfo installPrivateKeyAndPublicMerInfo(MerInfo merInfo) {
+        return UnionMerInfoStoreService.getInstance().getByMerIdAndTerminalId(merInfo);
     }
 }

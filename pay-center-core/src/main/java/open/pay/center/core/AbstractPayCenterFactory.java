@@ -81,7 +81,7 @@ public abstract class AbstractPayCenterFactory implements PayWayFactory, PayQuer
         try {
             httpClient.send(param,encoding);
         } catch (Exception e) {
-            throw new PayException("发送POST请求异常!",e);
+            throw new PayException("发送POST请求异常!=>"+url,e);
         }
         return httpClient.getResult();
     }

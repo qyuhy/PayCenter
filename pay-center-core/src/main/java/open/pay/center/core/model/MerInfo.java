@@ -38,6 +38,14 @@ public class MerInfo {
      * 公钥
      */
     private PublicKey publicKey;
+    /**
+     * 非标准私钥
+     */
+    private Object priKey;
+    /**
+     * 非标准公钥
+     */
+    private Object pubKey;
 
     public MerInfo(){};
 
@@ -103,5 +111,21 @@ public class MerInfo {
 
     public void setPublicKeyPassword(String publicKeyPassword) {
         this.publicKeyPassword = publicKeyPassword;
+    }
+
+    public Object getPriKey() {
+        return priKey;
+    }
+
+    public void setPriKey(Object priKey) {
+        this.priKey = priKey;
+    }
+
+    public Object getPubKey() {
+        return pubKey;
+    }
+
+    public void setPubKey(Object pubKey) {
+        this.pubKey = pubKey;
     }
 }

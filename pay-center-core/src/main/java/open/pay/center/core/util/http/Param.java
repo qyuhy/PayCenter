@@ -1,5 +1,7 @@
 package open.pay.center.core.util.http;
 
+import open.pay.center.core.util.JsonUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,5 +26,12 @@ public class Param {
 
     public Map<String,String> getData(){
         return data;
+    }
+
+    @Override
+    public String toString() {
+        return "Param{" +
+                "data=" + JsonUtil.toJson(data) +
+                '}';
     }
 }

@@ -49,7 +49,6 @@ public class DaifuSubmitRequest {
     private String remark;
 
 
-
     public DaifuSubmitRequest subBank(String subBank){
         this.subBank = subBank;
         return this;
