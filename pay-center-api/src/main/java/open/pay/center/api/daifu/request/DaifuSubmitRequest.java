@@ -1,5 +1,7 @@
 package open.pay.center.api.daifu.request;
 
+import java.util.Date;
+
 /**
  * User: hyman
  * Date: 2017/5/5 0005
@@ -47,15 +49,50 @@ public class DaifuSubmitRequest {
      * 备注
      */
     private String remark;
+    /**
+     * 是不是个人
+     */
+    private boolean personal = true;
+    /**
+     * 交易时间
+     */
+    private Date date;
 
+    /**
+     * 设置时间
+     * @param date
+     * @return
+     */
+    public DaifuSubmitRequest date(Date date){
+        this.date = date;
+        return this;
+    }
 
+    /**
+     * 设置支行
+     * @param subBank
+     * @return
+     */
     public DaifuSubmitRequest subBank(String subBank){
         this.subBank = subBank;
         return this;
     }
 
-    public DaifuSubmitRequest bankName(String bankName){
-        this.bankName = bankName;
+    /**
+     * 对私代付
+     * @return
+     */
+    public DaifuSubmitRequest personal(){
+        this.personal = true;
+        return this;
+    }
+
+    /**
+     * 对公代付
+     * @return
+     */
+    public DaifuSubmitRequest company(){
+        this.personal = false;
         return this;
     }
 
@@ -72,25 +109,39 @@ public class DaifuSubmitRequest {
      * @param orderNo
      * @param amount
      * @param userName
+     * @param bankName
      * @param cardNo
      * @param province
      * @param city
      * @param remark
      */
-    private DaifuSubmitRequest(String orderNo, String amount, String userName, String cardNo, String province, String city,String remark) {
+    private DaifuSubmitRequest(String orderNo, String amount, String userName,String bankName,String cardNo,String province, String city,String remark) {
         this.orderNo = orderNo;
         this.amount = amount;
         this.userName = userName;
+        this.bankName = bankName;
         this.cardNo = cardNo;
         this.province = province;
         this.city = city;
         this.remark = remark;
     }
 
-    public static DaifuSubmitRequest build(String orderNo, String amount, String userName, String cardNo, String province, String city,String remark){
-        return new DaifuSubmitRequest(orderNo,amount,userName,cardNo,province,city,remark);
+    public static DaifuSubmitRequest build(String orderNo, String amount, String userName,String bankName, String cardNo, String province, String city,String remark){
+        return new DaifuSubmitRequest(orderNo,amount,userName,bankName,cardNo,province,city,remark);
     }
 
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public boolean isPersonal() {
+        return personal;
+    }
 
     public String getOrderNo() {
         return orderNo;

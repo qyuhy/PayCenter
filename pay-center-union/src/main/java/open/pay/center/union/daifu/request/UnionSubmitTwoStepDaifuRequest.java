@@ -128,6 +128,8 @@ public class UnionSubmitTwoStepDaifuRequest extends SubmitTwoStepDaifuRequest {
         return plainSignData;
     }
 
+    public UnionSubmitTwoStepDaifuRequest(){};
+
     public UnionSubmitTwoStepDaifuRequest(String merId, MerInfo merInfo, String url) {
         this.merId = merId;
         this.merInfo = merInfo;
@@ -163,6 +165,31 @@ public class UnionSubmitTwoStepDaifuRequest extends SubmitTwoStepDaifuRequest {
         this.purpose = purpose;
         this.merInfo = merInfo;
         this.url = url;
+    }
+
+    /**
+     * 构造函数
+     * @param merDate   日期
+     * @param merSeqId  序列号
+     * @param cardNo    收款账号
+     * @param usrName   收款人在银行开户时留存的开户姓名
+     * @param openBank  开户银行名称
+     * @param prov      省份
+     * @param city      城市
+     * @param transAmt  金额，单位分
+     * @param purpose   备注
+     */
+    public UnionSubmitTwoStepDaifuRequest(String merSeqId, String merDate,
+                                          String cardNo, String usrName, String openBank, String prov, String city, String transAmt, String purpose) {
+        this.merDate = merDate;
+        this.merSeqId = merSeqId;
+        this.cardNo = cardNo;
+        this.usrName = usrName;
+        this.openBank = openBank;
+        this.prov = prov;
+        this.city = city;
+        this.transAmt = transAmt;
+        this.purpose = purpose;
     }
 
     public String getMerId() {

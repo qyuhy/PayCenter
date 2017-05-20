@@ -61,6 +61,7 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${sl4j.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

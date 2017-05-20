@@ -3,6 +3,7 @@ package open.pay.center.api;
 import open.pay.center.baofu.daifu.BaofuTwoStepDaifuHandler;
 import open.pay.center.core.daifu.way.TwoStepDaifu;
 import open.pay.center.core.pay.way.ProtocolPay;
+import open.pay.center.union.daifu.UnionTwoStepDaifuHandler;
 import open.pay.center.union.pay.UnionPayHandler;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class PayManager {
         //初始化银联协议支付结果
         protocolPayMap.put(PayChannelEnum.UNION,new UnionPayHandler());
         twoStepDaifuMap.put(PayChannelEnum.BAOFU,new BaofuTwoStepDaifuHandler());
+        twoStepDaifuMap.put(PayChannelEnum.UNION,new UnionTwoStepDaifuHandler());
     }
 
     public static PayManager getInstance(){

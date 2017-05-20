@@ -18,11 +18,13 @@ import open.pay.center.baofu.exception.BaofuException;
 import open.pay.center.core.daifu.way.TwoStepDaifu;
 import open.pay.center.core.model.Money;
 import open.pay.center.core.model.ResponseStatus;
+import open.pay.center.union.daifu.request.UnionSubmitTwoStepDaifuRequest;
+import open.pay.center.union.daifu.response.UnionSubmitTwoStepDaifuResponse;
+import open.pay.center.union.daifu.vo.UnionDaifuItem;
+import open.pay.center.union.exception.UnionException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * User: hyman
@@ -62,10 +64,81 @@ public class DaifuHandlerAdapter{
                 response = this.executeBaofuDaifuSubmitBatch(request);
                 break;
             case UNION:
+                response = this.executeUnionDaifuSubmitBatch(request);
                 break;
             default:
         }
         return response;
+    }
+
+    private DaifuSubmitBatchResponse executeUnionDaifuSubmitBatch(DaifuSubmitBatchRequest request) {
+        TwoStepDaifu handler = PayManager.getInstance().getTwoStepDaifu(PayChannelEnum.UNION);
+        //1.构建请求参数
+        UnionSubmitTwoStepDaifuRequest realRequest = this.buildUnionDaifuSubmitRequest(null,request);
+        //2.执行
+        UnionSubmitTwoStepDaifuResponse unionResponse = handler.submitTwoStepDaifu(realRequest);
+        UnionDaifuItem data = unionResponse.getData();
+        //3.转换为统一的响应对象;
+        DaifuSubmitBatchResponse response = new DaifuSubmitBatchResponse(
+                unionResponse.getTipStatus(),
+                unionResponse.getTip(),
+                unionResponse.getPlainResponse(),
+                unionResponse.getStatus());
+        List<DaifuSubmitResponse> items = new ArrayList<>(this.maxBatchSize(PayChannelEnum.UNION));
+        DaifuSubmitResponse item = new DaifuSubmitResponse(
+                unionResponse.getTipStatus(),
+                unionResponse.getTip(),
+                unionResponse.getPlainResponse(),
+                unionResponse.getStatus(),
+                data.getTransAmt(),
+                data.getMerSeqId());
+        item.setEntry(data);
+        item.setCardNo(data.getCardNo());
+        item.setChannelOrderNo(data.getCpSeqId());
+        item.setTransStatus(data.getTransState());
+        items.add(item);
+        response.setItemList(items);
+        return response;
+    }
+
+    /**
+     * 由DaifuSubmitBatchRequest转换为UnionSubmitTwoStepDaifuRequest
+     * @param request
+     * @return
+     */
+    private UnionSubmitTwoStepDaifuRequest buildUnionDaifuSubmitRequest(DaifuSubmitRequest singleRequest ,DaifuSubmitBatchRequest request) {
+        UnionSubmitTwoStepDaifuRequest retValue = new UnionSubmitTwoStepDaifuRequest();
+        retValue.setUrl(config.getUnionDaifuSubmitUrl());//请求URL
+        retValue.setMerId(config.getUnionDaifuSubmitMerId());//请求商户号
+        retValue.setConnectionTimeout(config.getUnionDaifuSubmitHttpConnectionTimeOut());//创建链接超时时间
+        retValue.setReadTimeout(config.getUnionDaifuSubmitHttpReadTimeout());//读取数据超时时间
+        retValue.setMerInfo(config.getUnionMerInfoList().get(config.getUnionDaifuSubmitMerId()));//商户信息
+        retValue.setEncrpyt(ApiConfig.ENV_TEST.equals(config.getEnv()) ? false : true);
+        retValue.setEncryptPassword(config.getLogEncryptPassword());
+        DaifuSubmitRequest item = null;
+        if(request != null){
+            if(request.getItemList() == null){
+                throw UnionException.PARAM_ERROR.newInstance("UnionSubmitTwoStepDaifuRequest[ItemList]为空");
+            }
+            int maxBatchSize = this.maxBatchSize(PayChannelEnum.UNION);
+            if(request.getItemList().size() > maxBatchSize){
+                throw UnionException.PARAM_ERROR.newInstance("超过了批量[%s]大小限制",maxBatchSize);
+            }
+            item = request.getItemList().get(0);
+        }else{
+            item = singleRequest;
+        }
+        retValue.setMerDate(item.getDate() == null ? new SimpleDateFormat("yyyyMMdd").format(new Date()) : new SimpleDateFormat("yyyyMMdd").format(item.getDate()));
+        retValue.setMerSeqId(item.getOrderNo());
+        retValue.setCardNo(item.getCardNo());
+        retValue.setUsrName(item.getUserName());
+        retValue.setOpenBank(item.getBankName());
+        retValue.setProv(item.getProvince());
+        retValue.setCity(item.getCity());
+        retValue.setTransAmt(item.getAmount());
+        retValue.setPurpose(item.getRemark());
+        retValue.setFlag(item.isPersonal() ? UnionSubmitTwoStepDaifuRequest.FLAG_PRIVATE : UnionSubmitTwoStepDaifuRequest.FLAG_PUBLIC);
+        return retValue;
     }
 
 
@@ -83,6 +156,11 @@ public class DaifuHandlerAdapter{
         return maxSize;
     }
 
+    /**
+     * 宝付批量提交
+     * @param request
+     * @return
+     */
     private DaifuSubmitBatchResponse executeBaofuDaifuSubmitBatch(DaifuSubmitBatchRequest request) {
         TwoStepDaifu handler = PayManager.getInstance().getTwoStepDaifu(PayChannelEnum.BAOFU);
         //1.构建请求参数
@@ -138,6 +216,8 @@ public class DaifuHandlerAdapter{
                 response = submitBaofuRequest.formatJsonString();
                 break;
             case UNION:
+                UnionSubmitTwoStepDaifuRequest submitUnionRequest = this.buildUnionDaifuSubmitRequest(request,null);
+                response = submitUnionRequest.formatJsonString();
                 break;
             default:
         }
@@ -227,7 +307,10 @@ public class DaifuHandlerAdapter{
      * @return
      */
     private DaifuSubmitResponse executeUnionDaifuSubmit(DaifuSubmitRequest request) {
-        return null;
+        List<DaifuSubmitRequest> list = Arrays.asList(request);
+        DaifuSubmitBatchRequest batchRequest = new DaifuSubmitBatchRequest(list);
+        DaifuSubmitBatchResponse response = this.executeUnionDaifuSubmitBatch(batchRequest);
+        return response.getItemList().get(0);
     }
 
     public DaifuQueryResponse query(PayChannelEnum payChannelEnum,DaifuQueryRequest request){
