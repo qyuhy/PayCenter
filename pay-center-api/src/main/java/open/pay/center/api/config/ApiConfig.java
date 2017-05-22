@@ -128,6 +128,44 @@ public class ApiConfig {
      * 银联代付交易读取超时时间
      */
     private int unionDaifuSubmitHttpReadTimeout = READ_TIME_OUT;
+    /**
+     * ============================================
+     * ==========银联代付交易配置信息结束==========
+     * ============================================
+     */
+
+    /**
+     * ============================================
+     * ==========银联代付交易查询配置信息开始==========
+     * ============================================
+     */
+    private String unionDaifuQueryMerId;
+    /**
+     * 银联代付查询接口版本号
+     */
+    private String unionDaifuQueryVersion;
+    /**
+     * 银联代付查询终端号
+     */
+    private String unionDaifuQueryTerminal;
+    /**
+     * 银联代付查询提交地址
+     */
+    private String unionDaifuQueryUrl;
+    /**
+     * 银联代付查询链接超时时间
+     * 单位：毫秒
+     */
+    private int unionDaifuQueryHttpConnectionTimeOut = CONNECTON_TIME_OUT;
+    /**
+     * 银联代付查询读取超时时间
+     */
+    private int unionDaifuQueryHttpReadTimeout = READ_TIME_OUT;
+    /**
+     * ============================================
+     * ==========银联代付交易查询配置信息结束==========
+     * ============================================
+     */
 
     public Map<String, MerInfo> getUnionMerInfoList() {
         return unionMerInfoList;
@@ -135,6 +173,54 @@ public class ApiConfig {
 
     public void setUnionMerInfoList(Map<String, MerInfo> unionMerInfoList) {
         this.unionMerInfoList = unionMerInfoList;
+    }
+
+    public String getUnionDaifuQueryMerId() {
+        return unionDaifuQueryMerId;
+    }
+
+    public void setUnionDaifuQueryMerId(String unionDaifuQueryMerId) {
+        this.unionDaifuQueryMerId = unionDaifuQueryMerId;
+    }
+
+    public String getUnionDaifuQueryVersion() {
+        return unionDaifuQueryVersion;
+    }
+
+    public void setUnionDaifuQueryVersion(String unionDaifuQueryVersion) {
+        this.unionDaifuQueryVersion = unionDaifuQueryVersion;
+    }
+
+    public String getUnionDaifuQueryTerminal() {
+        return unionDaifuQueryTerminal;
+    }
+
+    public void setUnionDaifuQueryTerminal(String unionDaifuQueryTerminal) {
+        this.unionDaifuQueryTerminal = unionDaifuQueryTerminal;
+    }
+
+    public String getUnionDaifuQueryUrl() {
+        return unionDaifuQueryUrl;
+    }
+
+    public void setUnionDaifuQueryUrl(String unionDaifuQueryUrl) {
+        this.unionDaifuQueryUrl = unionDaifuQueryUrl;
+    }
+
+    public int getUnionDaifuQueryHttpConnectionTimeOut() {
+        return unionDaifuQueryHttpConnectionTimeOut;
+    }
+
+    public void setUnionDaifuQueryHttpConnectionTimeOut(int unionDaifuQueryHttpConnectionTimeOut) {
+        this.unionDaifuQueryHttpConnectionTimeOut = unionDaifuQueryHttpConnectionTimeOut;
+    }
+
+    public int getUnionDaifuQueryHttpReadTimeout() {
+        return unionDaifuQueryHttpReadTimeout;
+    }
+
+    public void setUnionDaifuQueryHttpReadTimeout(int unionDaifuQueryHttpReadTimeout) {
+        this.unionDaifuQueryHttpReadTimeout = unionDaifuQueryHttpReadTimeout;
     }
 
     public String getUnionDaifuSubmitMerId() {
@@ -176,14 +262,6 @@ public class ApiConfig {
     public void setUnionDaifuSubmitHttpReadTimeout(int unionDaifuSubmitHttpReadTimeout) {
         this.unionDaifuSubmitHttpReadTimeout = unionDaifuSubmitHttpReadTimeout;
     }
-
-    /**
-     * ============================================
-     * ==========银联代付交易配置信息结束==========
-     * ============================================
-     */
-
-
 
     public Map<String, MerInfo> getBaofuMerInoList() {
         return baofuMerInoList;

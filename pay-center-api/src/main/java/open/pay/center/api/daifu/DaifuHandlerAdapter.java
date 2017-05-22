@@ -18,7 +18,9 @@ import open.pay.center.baofu.exception.BaofuException;
 import open.pay.center.core.daifu.way.TwoStepDaifu;
 import open.pay.center.core.model.Money;
 import open.pay.center.core.model.ResponseStatus;
+import open.pay.center.union.daifu.request.UnionQueryTwoStepDaifuRequest;
 import open.pay.center.union.daifu.request.UnionSubmitTwoStepDaifuRequest;
+import open.pay.center.union.daifu.response.UnionQueryTwoStepDaifuResponse;
 import open.pay.center.union.daifu.response.UnionSubmitTwoStepDaifuResponse;
 import open.pay.center.union.daifu.vo.UnionDaifuItem;
 import open.pay.center.union.exception.UnionException;
@@ -329,12 +331,28 @@ public class DaifuHandlerAdapter{
     }
 
     /**
-     * 执行银联代付请求
+     * 执行银联代付查询请求
      * @param daifuQueryRequest
      * @return
      */
     private DaifuQueryResponse executeUnionDaifuQuery(DaifuQueryRequest daifuQueryRequest) {
-        return null;
+        TwoStepDaifu handler = PayManager.getInstance().getTwoStepDaifu(PayChannelEnum.UNION);
+        //1.构建请求
+        UnionQueryTwoStepDaifuRequest queryRequest = this.buildUnionDaifuQueryRequest(daifuQueryRequest);
+        //2.执行请求
+        UnionQueryTwoStepDaifuResponse queryResponse = handler.queryTwoStepDaifu(queryRequest);
+        UnionDaifuItem data = queryResponse.getData();
+        //3.统一构建返回值
+        DaifuQueryResponse response = new DaifuQueryResponse(
+                queryResponse.getTipStatus(),
+                queryResponse.getTip(),
+                queryResponse.getPlainResponse(),
+                queryResponse.getStatus(),
+                data.getTransAmt());
+        response.setTransStatus(data.getTransState());
+        response.setChannelOrderNo(data.getCpSeqId());
+        response.setEntry(data);
+        return response;
     }
 
     /**
@@ -371,10 +389,31 @@ public class DaifuHandlerAdapter{
                 response = queryTwoStepDaifuRequest.formatJsonString();
                 break;
             case UNION:
+                UnionQueryTwoStepDaifuRequest unionQuery = this.buildUnionDaifuQueryRequest(request);
+                response = unionQuery.formatJsonString();
                 break;
             default:
         }
         return response;
+    }
+
+    /**
+     * 构建参数
+     * @param request
+     * @return
+     */
+    private UnionQueryTwoStepDaifuRequest buildUnionDaifuQueryRequest(DaifuQueryRequest request) {
+        UnionQueryTwoStepDaifuRequest queryTwoStepDaifuRequest = new UnionQueryTwoStepDaifuRequest();
+        queryTwoStepDaifuRequest.setUrl(config.getUnionDaifuQueryUrl());//请求URL
+        queryTwoStepDaifuRequest.setConnectionTimeout(config.getUnionDaifuQueryHttpConnectionTimeOut());//创建链接超时时间
+        queryTwoStepDaifuRequest.setReadTimeout(config.getUnionDaifuQueryHttpReadTimeout());//读取数据超时时间
+        queryTwoStepDaifuRequest.setMerInfo(config.getUnionMerInfoList().get(config.getUnionDaifuQueryMerId()));//商户信息
+        queryTwoStepDaifuRequest.setEncrpyt(ApiConfig.ENV_TEST.equals(config.getEnv()) ? false : true);
+        queryTwoStepDaifuRequest.setEncryptPassword(config.getLogEncryptPassword());
+        queryTwoStepDaifuRequest.setMerId(config.getUnionDaifuQueryMerId());
+        queryTwoStepDaifuRequest.setMerDate(request.getDate());
+        queryTwoStepDaifuRequest.setMerSeqId(request.getOrderNo());
+        return queryTwoStepDaifuRequest;
     }
 
     /**

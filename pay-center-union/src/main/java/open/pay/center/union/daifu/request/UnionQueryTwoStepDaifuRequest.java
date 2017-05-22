@@ -65,6 +65,8 @@ public class UnionQueryTwoStepDaifuRequest extends QueryTwoStepDaifuRequest {
         return plainSignData;
     }
 
+    public UnionQueryTwoStepDaifuRequest(){}
+
     public UnionQueryTwoStepDaifuRequest(String url, String merId, MerInfo merInfo, String merDate, String merSeqId) {
         this.url = url;
         this.merId = merId;
