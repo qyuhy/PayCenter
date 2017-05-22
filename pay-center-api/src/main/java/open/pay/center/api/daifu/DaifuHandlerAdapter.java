@@ -101,6 +101,7 @@ public class DaifuHandlerAdapter{
         item.setTransStatus(data.getTransState());
         items.add(item);
         response.setItemList(items);
+        response.setSupportSynchronized(true);
         return response;
     }
 
