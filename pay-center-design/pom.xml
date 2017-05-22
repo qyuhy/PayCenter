@@ -16,6 +16,16 @@
     </properties>
     <build>
         <finalName>pay-center-design</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${compile.version}</source>
+                    <target>${compile.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <distributionManagement>
