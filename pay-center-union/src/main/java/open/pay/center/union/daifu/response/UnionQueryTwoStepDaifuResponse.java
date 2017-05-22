@@ -42,6 +42,13 @@ public class UnionQueryTwoStepDaifuResponse extends QueryTwoStepDaifuResponse {
         String stat = dataArray[14];
         String backDate = dataArray[15];
         String chkValue = dataArray[16];
+        if((chkValue == null || chkValue.length()<=0) && "001".equals(code)){
+            chkValue = dataArray[17];
+        }
+        if(chkValue == null){
+            chkValue = this.plainResponse.substring(0,this.plainResponse.length() - 256);
+        }
+
         this.tipStatus = code;
         ResponseStatus responseStatus = ResponseStatus.PENDING;
         if(SUCCESS_CODE.equals(this.tipStatus)){
@@ -77,7 +84,7 @@ public class UnionQueryTwoStepDaifuResponse extends QueryTwoStepDaifuResponse {
                 statStatus = ResponseStatus.ERROR;
             }
         }
-        if((merSeqId == null || merSeqId.length()<=0) && (merDate == null && merDate.length()<=0)){
+        if((merSeqId == null || merSeqId.length()<=0) && (merDate == null || merDate.length()<=0)){
             statStatus = ResponseStatus.ERROR;
         }
         this.data.setTransState(statStatus);
