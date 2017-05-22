@@ -30,6 +30,10 @@ public class DaifuSubmitResponse extends ResponseBaseVo{
      * 批次号
      */
     private String channelBatchid;
+    /**
+     * 交易日期
+     */
+    private String date;
 
 
     public DaifuSubmitResponse(String returnCode, String returnMessage, String returnText, ResponseStatus status,String amount,String orderNo) {
@@ -39,6 +43,14 @@ public class DaifuSubmitResponse extends ResponseBaseVo{
         this.status = status;
         this.amount = amount;
         this.orderNo = orderNo;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getOrderNo() {
@@ -93,6 +105,7 @@ public class DaifuSubmitResponse extends ResponseBaseVo{
                 ", channelOrderNo='" + channelOrderNo + '\'' +
                 ", amount='" + amount + '\'' +
                 ", cardNo='" + cardNo + '\'' +
+                ", date='" + date + '\'' +
                 ", channelBatchid='" + channelBatchid + '\'' +
                 ", supportSynchronized=" + this.isSupportSynchronized() +
                 ", transStatus=" + this.getTransStatus() +

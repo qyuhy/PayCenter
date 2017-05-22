@@ -97,6 +97,7 @@ public class DaifuHandlerAdapter{
         item.setEntry(data);
         item.setCardNo(data.getCardNo());
         item.setChannelOrderNo(data.getCpSeqId());
+        item.setDate(data.getMerDate());
         item.setTransStatus(data.getTransState());
         items.add(item);
         response.setItemList(items);
