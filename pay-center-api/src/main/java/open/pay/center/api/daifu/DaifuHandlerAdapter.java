@@ -34,7 +34,7 @@ import java.util.*;
  * Time: 17:48
  * Email: qyuhy@qq.com
  */
-public class DaifuHandlerAdapter{
+public class DaifuHandlerAdapter {
     private ApiConfig config;
 
 
@@ -43,7 +43,7 @@ public class DaifuHandlerAdapter{
         this.config = config;
     }
 
-    public DaifuSubmitResponse submit(PayChannelEnum payChannelEnum,DaifuSubmitRequest request){
+    public DaifuSubmitResponse submit(PayChannelEnum payChannelEnum, DaifuSubmitRequest request){
         //根据渠道不同构建不同的参数信息
         DaifuSubmitResponse response = null;
         switch (payChannelEnum){
@@ -99,6 +99,12 @@ public class DaifuHandlerAdapter{
         item.setChannelOrderNo(data.getCpSeqId());
         item.setDate(data.getMerDate());
         item.setTransStatus(data.getTransState());
+        if(item.getOrderNo() == null){
+            item.setOrderNo(realRequest.getMerSeqId());
+        }
+        if(item.getDate() == null){
+            item.setDate(realRequest.getMerDate());
+        }
         items.add(item);
         response.setItemList(items);
         response.setSupportSynchronized(true);
@@ -110,7 +116,7 @@ public class DaifuHandlerAdapter{
      * @param request
      * @return
      */
-    private UnionSubmitTwoStepDaifuRequest buildUnionDaifuSubmitRequest(DaifuSubmitRequest singleRequest ,DaifuSubmitBatchRequest request) {
+    private UnionSubmitTwoStepDaifuRequest buildUnionDaifuSubmitRequest(DaifuSubmitRequest singleRequest , DaifuSubmitBatchRequest request) {
         UnionSubmitTwoStepDaifuRequest retValue = new UnionSubmitTwoStepDaifuRequest();
         retValue.setUrl(config.getUnionDaifuSubmitUrl());//请求URL
         retValue.setMerId(config.getUnionDaifuSubmitMerId());//请求商户号
@@ -212,7 +218,7 @@ public class DaifuHandlerAdapter{
      * @param request
      * @return
      */
-    public String formatDaifuSubmitRequest(PayChannelEnum payChannelEnum,DaifuSubmitRequest request){
+    public String formatDaifuSubmitRequest(PayChannelEnum payChannelEnum, DaifuSubmitRequest request){
         String response = null;
         switch (payChannelEnum){
             case BAOFU:
@@ -233,7 +239,7 @@ public class DaifuHandlerAdapter{
      * @param request
      * @return
      */
-    private BaofuSubmitTwoStepDaifuRequest buildBaofuDaifuSubmitRequest(DaifuSubmitRequest request,DaifuSubmitBatchRequest batchRequest) {
+    private BaofuSubmitTwoStepDaifuRequest buildBaofuDaifuSubmitRequest(DaifuSubmitRequest request, DaifuSubmitBatchRequest batchRequest) {
         BaofuSubmitTwoStepDaifuRequest submitTwoStepDaifuRequest = new BaofuSubmitTwoStepDaifuRequest();
         submitTwoStepDaifuRequest.setUrl(config.getBfDaifuSubmitUrl());//请求URL
         submitTwoStepDaifuRequest.setConnectionTimeout(config.getBfDaifuSubmitHttpConnectionTimeOut());//创建链接超时时间
@@ -317,7 +323,7 @@ public class DaifuHandlerAdapter{
         return response.getItemList().get(0);
     }
 
-    public DaifuQueryResponse query(PayChannelEnum payChannelEnum,DaifuQueryRequest request){
+    public DaifuQueryResponse query(PayChannelEnum payChannelEnum, DaifuQueryRequest request){
         //根据渠道不同构建不同的参数信息
         DaifuQueryResponse response = null;
         switch (payChannelEnum){
@@ -383,7 +389,7 @@ public class DaifuHandlerAdapter{
      * @param request
      * @return
      */
-    public String formatDaifuQueryRequest(PayChannelEnum payChannelEnum,DaifuQueryRequest request){
+    public String formatDaifuQueryRequest(PayChannelEnum payChannelEnum, DaifuQueryRequest request){
         String response = null;
         switch (payChannelEnum){
             case BAOFU:
